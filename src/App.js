@@ -5,12 +5,9 @@ export const App = () => {
   //新規のTodo(state)
   const [todoText, setTodoText] = useState("");
   //未完了のTodo(state)
-  const [imcomplateTodos, setImcomplateTodos] = useState([
-    "ああああ",
-    "いいいい"
-  ]);
+  const [imcomplateTodos, setImcomplateTodos] = useState([]);
   //完了したTodo(state)
-  const [complateTodos, setComplateTodos] = useState(["うううう"]);
+  const [complateTodos, setComplateTodos] = useState([]);
 
   //新規のTodoが追加されたときtodoTextを更新する
   const newTextTodo = (event) => setTodoText(event.target.value);
@@ -19,6 +16,7 @@ export const App = () => {
   const onClickAdd = () => {
     if (todoText === "") return;
     const newImcomplateTodos = [...imcomplateTodos, todoText];
+
     setImcomplateTodos(newImcomplateTodos);
     setTodoText("");
   };
@@ -27,7 +25,28 @@ export const App = () => {
   const onClickDelete = (index) => {
     const deleteImcomplateTodos = [...imcomplateTodos];
     deleteImcomplateTodos.splice(index, 1);
+
     setImcomplateTodos(deleteImcomplateTodos);
+  };
+
+  //完了ボタン押下時
+  const onClickComplate = (index) => {
+    const deleteImcomplateTodos = [...imcomplateTodos];
+    const newComplateTodos = [...complateTodos, deleteImcomplateTodos[index]];
+    deleteImcomplateTodos.splice(index, 1);
+
+    setImcomplateTodos(deleteImcomplateTodos);
+    setComplateTodos(newComplateTodos);
+  };
+
+  //戻すボタン押下時
+  const onClickBack = (index) => {
+    const deleteComplateTodos = [...complateTodos];
+    const newImcomplateTodos = [...imcomplateTodos, deleteComplateTodos[index]];
+    deleteComplateTodos.splice(index, 1);
+
+    setImcomplateTodos(newImcomplateTodos);
+    setComplateTodos(deleteComplateTodos);
   };
 
   return (
@@ -49,7 +68,7 @@ export const App = () => {
               //map関数内でdivなどを使用するときはkeyを付与すること
               <div key={index} className="list-row">
                 <li>{todo}</li>
-                <button>完了</button>
+                <button onClick={() => onClickComplate(index)}>完了</button>
                 <button onClick={() => onClickDelete(index)}>削除</button>
               </div>
             );
@@ -60,12 +79,12 @@ export const App = () => {
       <div className="complate-area">
         <p className="title">完了したTODO</p>
         <ul>
-          {complateTodos.map((todo) => {
+          {complateTodos.map((todo, index) => {
             return (
               //map関数内でdivなどを使用するときはkeyを付与すること
-              <div key={todo} className="list-row">
+              <div key={index} className="list-row">
                 <li>{todo}</li>
-                <button>戻す</button>
+                <button onClick={() => onClickBack(index)}>戻す</button>
               </div>
             );
           })}
