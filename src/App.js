@@ -15,9 +15,19 @@ export const App = () => {
   //新規のTodoが追加されたときtodoTextを更新する
   const newTextTodo = (event) => setTodoText(event.target.value);
 
+  //新規Todo追加時
   const onClickAdd = () => {
-    console.log("onClickAdd");
-    alert("onClickAdd");
+    if (todoText === "") return;
+    const newImcomplateTodos = [...imcomplateTodos, todoText];
+    setImcomplateTodos(newImcomplateTodos);
+    setTodoText("");
+  };
+
+  //削除ボタン押下時
+  const onClickDelete = (index) => {
+    const deleteImcomplateTodos = [...imcomplateTodos];
+    deleteImcomplateTodos.splice(index, 1);
+    setImcomplateTodos(deleteImcomplateTodos);
   };
 
   return (
@@ -40,7 +50,7 @@ export const App = () => {
               <div key={index} className="list-row">
                 <li>{todo}</li>
                 <button>完了</button>
-                <button>削除</button>
+                <button onClick={() => onClickDelete(index)}>削除</button>
               </div>
             );
           })}
